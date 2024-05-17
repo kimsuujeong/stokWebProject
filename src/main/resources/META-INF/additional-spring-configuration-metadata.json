@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "spring.application.datasource.username",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.application.datasource.username'"
+  },
+  {
+    "name": "spring.application.datasource.driver-class-name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.application.datasource.driver-class-name'"
+  }
+]}
