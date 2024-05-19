@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Navigate } from "react-router-dom";
 
 function QuestionComponent() {
     const [questions, setQuestions] = useState([]);
+    const [redirectToWrite, setRedirectToWrite] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -16,10 +18,18 @@ function QuestionComponent() {
         fetchData();
     }, []);
 
+    const redirectToWritePage = () => {
+        setRedirectToWrite(true);
+    }
+
+    if (redirectToWrite) {
+        return <Navigate to="/Write" />;
+    }
+
     return (
         <div>
             <h1>게시글 목록</h1>
-            <button>글쓰기 버튼</button>
+            <button onClick={redirectToWritePage}>글쓰기 버튼</button>
             <ul>
                 {questions.map(question => (
                     <li key={question.boardNumber}>

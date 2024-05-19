@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [redirectToJoin, setRedirectToJoin] = useState(false);
+    const [redirectToSign, setRedirectToSign] = useState(false);
 
     const saveEmail = event => {
         setEmail(event.target.value);
@@ -27,12 +27,12 @@ function Login() {
             });
     }
 
-    const redirectToJoinPage = () => {
-        setRedirectToJoin(true);
+    const redirectToSignPage = () => {
+        setRedirectToSign(true);
     }
 
-    if (redirectToJoin) {
-        return <Navigate to="/join" />;
+    if (redirectToSign) {
+        return <Navigate to="/signup" />;
     }
 
     return (
@@ -55,7 +55,7 @@ function Login() {
                 onChange={savePassword}
             />
             <button onClick={handleLogin}>로그인</button>
-            <button onClick={redirectToJoinPage}>회원가입</button>
+            <button onClick={redirectToSignPage}>회원가입</button>
         </div>
     );
 }
