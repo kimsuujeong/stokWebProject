@@ -1,19 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [redirectToSign, setRedirectToSign] = useState(false);
+    const navigate = useNavigate();
 
     const saveEmail = event => {
         setEmail(event.target.value);
-    }
+    };
 
     const savePassword = event => {
         setPassword(event.target.value);
-    }
+    };
 
     const handleLogin = () => {
         const requestData = { email, password };
@@ -21,15 +22,17 @@ function Login() {
         axios.post('http://localhost:8085/login', requestData)
             .then(response => {
                 console.log(response.data);
+                document.cookie = `sessionId=${email}; path=/`;
+                navigate('/');
             })
             .catch(error => {
                 console.error('로그인 실패:', error);
             });
-    }
+    };
 
     const redirectToSignPage = () => {
         setRedirectToSign(true);
-    }
+    };
 
     if (redirectToSign) {
         return <Navigate to="/signup" />;
@@ -38,7 +41,7 @@ function Login() {
     return (
         <div>
             일단 여기 로그인
-            <br></br>
+            <br />
             <input
                 className="login_id"
                 type="text"
@@ -46,7 +49,7 @@ function Login() {
                 value={email}
                 onChange={saveEmail}
             />
-            <br></br>
+            <br />
             <input
                 className="login_pw"
                 type="password"
