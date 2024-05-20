@@ -1,29 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
-import ReactQuill from "react-quill"
+import ReactQuill from "react-quill";
+import S3Upload from "../components/S3Upload";
+import SelectStock from "../components/SelectStock";
+
+
 
 function Write() {
-
-	// useEffect
-
-	// useEffect(() => {
-	// 	const imageBtn = document.querySelector(".ql-image");
-
-	// 	if (imageBtn) {
-	// 		imageBtn.addEventListener("click", handleImageClick);
-	// 	}
-
-	// 	return () => {
-	// 		if (imageBtn) {
-	// 			imageBtn.removeEventListener("click", handleImageClick);
-	// 		}
-	// 	};
-
-	// }, []);
-
-	// const handleImageClick = () => {
-	// };
-
 
 	const modules = {
 		toolbar: {
@@ -39,15 +22,14 @@ function Write() {
 	return (
 		<>
 			<Form>
+				<h3 style={{padding:"20px", color:"gray-dark"}}>
+					<b>주식 질문방</b>
+				</h3>
 
-				<h1>
-					글쓰기
-				</h1>
+				<SelectStock/>
+				<br></br>
 
-				<Form.Select
-					style={{ width: "100%" }}>
-					<option>주식 코드</option>
-				</Form.Select>
+				<S3Upload />
 				<br></br>
 
 				<Form.Control

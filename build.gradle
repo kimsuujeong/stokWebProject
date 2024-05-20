@@ -22,19 +22,33 @@ repositories {
 }
 
 dependencies {
+	// jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// springBootWeb
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-	implementation "com.amazonaws:aws-java-sdk-s3:1.12.281"
-	
+	// AWS S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+    implementation group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
+	// lombok
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	
-	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-aws:2.2.1.RELEASE'
+    }
 }
 
 tasks.named('test') {

@@ -177,3 +177,4 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,windows,kotlin,java
 src/main/resources/application.properties
+src/main/stock-react/src/components/S3Upload.jsx
