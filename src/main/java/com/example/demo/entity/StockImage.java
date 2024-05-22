@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -17,7 +18,6 @@ import lombok.Setter;
 public class StockImage {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int boardNumber;
 	
 	@Column
@@ -27,6 +27,7 @@ public class StockImage {
 	private String chatgpt;
 	
 	@ManyToOne
-	private StockPost stockPostEntity;
+    @JoinColumn(name = "boardNumber", insertable=false, updatable=false)
+    private StockPost stockPostEntity;
 
 }

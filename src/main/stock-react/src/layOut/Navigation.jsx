@@ -44,7 +44,10 @@ function Navigation() {
                     </Nav>
                     <Nav className="ml-auto">
                         {isLoggedIn ? (
+                            <>
+                            {/* <a style={{color:"white", padding:"8px"}}>닉네임 넣는 곳 인데 나중에 만들거임</a> */}
                             <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
+                            </>
                         ) : (
                             <Nav.Link href="/login">로그인</Nav.Link>
                         )}
