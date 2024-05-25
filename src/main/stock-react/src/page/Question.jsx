@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
@@ -55,7 +55,7 @@ function QuestionComponent() {
 
     const renderPageNumbers = pageNumbers.map(number => (
         <Button 
-        variant="outline-primary"
+        variant={number === currentPage ? "primary" : "outline-primary"}
         key={number} onClick={() => setCurrentPage(number)}
         style={{marginLeft:"0.5rem"}}>
             {number}
@@ -72,7 +72,7 @@ function QuestionComponent() {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>번호</th>
+                        <th style={{ width: "5%" }}>#</th>
                         <th>제목</th>
                         <th>ID</th>
                         <th>만든 시간</th>
@@ -82,8 +82,8 @@ function QuestionComponent() {
                 <tbody>
                     {sortedItems.map(question => (
                         <tr key={question.boardNumber}>
-                            <td>{question.boardNumber}</td>
-                            <td>{question.title}</td>
+                            <td style={{ width: "5%" }}>{question.boardNumber}</td>
+                            <td><Link to={`/detail/${question.boardNumber}`}>{question.title}</Link></td>
                             <td>{question.userId}</td>
                             <td>{question.createTime}</td>
                             <td>{question.stockCode}</td>

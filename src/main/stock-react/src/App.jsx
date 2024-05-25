@@ -11,6 +11,7 @@ import ChatRoom from "./page/ChatRoom";
 import Login from "./page/Login";
 import Signup from "./page/Signup";
 import Write from "./page/Write";
+import Detail from "./page/Detail";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
 				<Route path="/chatRoom" element={<ChatRoom />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
+				<Route path="/detail/:boardNumber" element={<Detail />} />
 			</Routes>
 		</div>
 	);

@@ -7,8 +7,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "stockPost")
 public class StockPost {
@@ -34,6 +39,14 @@ public class StockPost {
 	
 	@Column
 	private int stockCode;
+	
+	@OneToOne(mappedBy = "stockPostEntity")
+    private StockImage stockImage; // StockImage와의 One-to-One 관계
+    
+    // Getter 메서드 추가
+    public StockImage getStockImage() {
+        return stockImage;
+    }
 
 
 	public int getBoardNumber() {
@@ -112,6 +125,8 @@ public class StockPost {
 				+ contents + ", createTime=" + createTime + ", updateTime=" + updateTime + ", stockCode=" + stockCode
 				+ "]";
 	}
+	
+	
 	
 
 
