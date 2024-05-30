@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @EntityScan
-public class StockProjectApplication {
+public class StokProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StockProjectApplication.class, args);
+		SpringApplication.run(StokProjectApplication.class, args);
 	}
 
 }
