@@ -33,8 +33,8 @@ dependencies {
 	// JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	// AWS S3
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws'
-    implementation group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
+    //implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+    //implementation group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -43,30 +43,26 @@ dependencies {
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-aws:2.2.1.RELEASE'
-    }
+	
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// SpringBoot 프로젝트가 build 될 때 React프로젝트가 먼저 build되며,
-// 결과물을 springBoot 프로젝트 build 결과물에 포함시킨다는 스크립트
-def frontendDir = "$projectDir/src/main/frontend"
+def frontendDir = "$projectDir/frontend"
 
 sourceSets {
 	main {
-		resources { srcDirs = ["$projectDir/src/main/resources"]
+		resources {
+			srcDirs = ["$projectDir/src/main/resources"]
 		}
 	}
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+processResources {
+	dependsOn "copyReactBuildFiles"
+}
 
 task installReact(type: Exec) {
 	workingDir "$frontendDir"
@@ -74,9 +70,10 @@ task installReact(type: Exec) {
 	group = BasePlugin.BUILD_GROUP
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine "npm.cmd", "audit", "fix"
-		commandLine 'npm.cmd', 'install' }
-	else {
-		commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+		commandLine 'npm.cmd', 'install'
+	} else {
+		commandLine "npm", "audit", "fix"
+		commandLine 'npm', 'install'
 	}
 }
 
@@ -95,5 +92,5 @@ task buildReact(type: Exec) {
 task copyReactBuildFiles(type: Copy) {
 	dependsOn "buildReact"
 	from "$frontendDir/build"
-	into "$projectDir/src/main/resources/static"
+	into "$buildDir/resources/main/static"
 }

@@ -4,6 +4,7 @@ import { Navigate, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
+import Cookies from 'js-cookie';
 
 function QuestionComponent() {
     const [questions, setQuestions] = useState([]);
@@ -12,6 +13,13 @@ function QuestionComponent() {
     const [sortOrder, setSortOrder] = useState('desc');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
+    const [WriteBtn, setWriteBtn] = useState(false);
+
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -23,6 +31,13 @@ function QuestionComponent() {
             }
         }
         fetchData();
+
+        const sessionId = getCookie('sessionId');
+
+        if (sessionId !== undefined){
+            setWriteBtn(true);
+        }
+
     }, []);
 
     const redirectToWritePage = () => {
@@ -67,7 +82,11 @@ function QuestionComponent() {
             <h3 style={{ margin: "1rem", color: "gray-dark" }}>
                 <b>게시글 목록</b>
             </h3>
-            <Button onClick={redirectToWritePage} style={{ marginBottom: "1rem" }}>글쓰기 버튼</Button>
+
+            {WriteBtn ? (
+                <Button onClick={redirectToWritePage} style={{ marginBottom: "1rem" }}>글쓰기 버튼</Button>) : 
+                (<></>)}
+            
 
             <Table striped bordered hover>
                 <thead>
