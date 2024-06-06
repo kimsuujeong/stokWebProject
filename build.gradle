@@ -40,6 +40,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	// mail Authentication
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-session-data-redis'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

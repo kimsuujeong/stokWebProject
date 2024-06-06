@@ -28,6 +28,7 @@ public class QuestionController {
 		
 		List<StockPostDto> posts = questionService.getAllBoard();
 		Collections.reverse(posts);
+		
 
 		return  new ResponseEntity<>(posts, HttpStatus.OK);
 	}

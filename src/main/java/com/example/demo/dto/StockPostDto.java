@@ -21,5 +21,6 @@ public class StockPostDto {
     private LocalDateTime updateTime;
     private int stockCode;
     private String imageURL; // 이미지 URL 추가
+    private String nickname;
 
 }
