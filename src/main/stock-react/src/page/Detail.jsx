@@ -72,7 +72,7 @@ function Detail() {
         <Container>
             
             <h3>{post.title}</h3>
-            <p>글쓴이 : {post.userId}</p>
+            <p>글쓴이 : {post.nickname}</p>
             <p>작성 시간 : {post.createTime}</p>
             <p>주식 코드 : {post.stockCode}</p>
             <img src={image} alt="미리보기" style={{ marginTop: '10px', maxWidth: '100%', maxHeight: '500px' }} />
