@@ -42,7 +42,7 @@ function Login() {
     }
 
     return (
-        <Container>
+        <Container >
             <Row className="justify-content-md-center" style={{ marginTop: '50px' }}>
                 <Col xs={8} md={4}>
                     <h2>로그인</h2>

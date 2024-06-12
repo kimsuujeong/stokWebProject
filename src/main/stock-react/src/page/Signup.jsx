@@ -14,10 +14,46 @@ const Signup = () => {
 	const [nicknameError, setNicknameError] = useState('');
 	const loginNavigate = useNavigate();
 
+	const handlennickNameChange = async (e) => {
+
+		const value = e.target.value;
+		setNickname(value);
+		const nicknamePattern = /^[^\s]{1,12}$/;
+
+        if (!nicknamePattern.test(value)) {
+            setNicknameError('공백 없이 12글자 이내로 해주세요.');
+            return;
+        }
+        setNicknameError('');
+
+
+		try {
+			const response = await axios.post('http://localhost:8085/signup/nickNameCheck', { nickname : value });
+
+			if (response.status === 200) {
+
+				setNicknameError('이미 사용 중인 닉네임 입니다.');
+
+			} else {
+
+				setNicknameError('');
+
+			}
+
+		} catch (error) {
+
+			console.error('닉네임 중복 확인 실패:', error);
+
+		}
+
+	};
+
 	const handleEmailChange = async (e) => {
+
 		const value = e.target.value;
 		setEmail(value);
 		const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 		if (!emailPattern.test(value)) {
 			setEmailError('올바른 이메일 형식이 아닙니다.');
 			return;
@@ -25,57 +61,113 @@ const Signup = () => {
 		setEmailError('');
 
 		try {
-			const response = await axios.post('http://localhost:8085/checkEmail', { email: value });
-			if (response.data.exists) {
+			const response = await axios.post('http://localhost:8085/signup/emailCheck', { email: value });
+
+			if (response.status === 200) {
+
 				setEmailError('이미 사용 중인 이메일입니다.');
+
 			} else {
+
 				setEmailError('');
+
 			}
+
 		} catch (error) {
+
 			console.error('이메일 중복 확인 실패:', error);
+
 		}
+
 	};
 
 	const handleEmailTokenSend = async () => {
 
-		await axios.post('http://localhost:8085/signup/email ', { email });
-
 		try {
-			alert("이메일 토큰을 전송했습니다.");
+
+			const response = await axios.post('http://localhost:8085/signup/email', { email });
+	
+			if (response.status === 200) {
+
+				alert("이메일 토큰을 전송했습니다.");
+
+			}
+
 		} catch (error) {
-			console.error('이메일 토큰 전송 실패:', error);
-			alert("이메일 토큰 전송에 실패했습니다.");
+
+			if (error.response && error.response.status === 401) {
+
+				console.error('이미 사용 중인 이메일입니다.');
+				alert('이미 사용 중인 이메일입니다.');
+
+			} else {
+
+				console.error('이메일 토큰 전송 실패:', error);
+				alert("이메일 토큰 전송에 실패했습니다.");
+
+			}
+
 		}
+
 	};
+	
+	
 
 	const handleSignup = async (e) => {
+
 		e.preventDefault();
+
 		if (password !== checkPassword) {
 			setPasswordError('비밀번호가 일치하지 않습니다.');
 			return;
 		}
+
 		setPasswordError('');
 
-		if (emailToken !== "올바른 토큰 값") {
-			setEmailTokenError('이메일 토큰이 올바르지 않습니다.');
-			return;
-		}
-		setEmailTokenError('');
-
-		const requestData = { email, password, nickname };
+		const requestData = { nickname, email, password, emailToken};
 
 		try {
-			const response = await axios.post('http://localhost:8085/join', requestData);
+
+			const response = await axios.post('http://localhost:8085/signup', requestData);
 			console.log(response.data);
 			if (response.status === 200) {
+
 				alert("회원가입이 완료 되었습니다.");
+
 				loginNavigate("/login");
+
 			} else {
+				
 				alert("회원가입에 실패했습니다.");
+
 			}
+
 		} catch (error) {
-			console.error('글쓰기 실패:', error);
-			alert("글 작성에 실패했습니다.");
+
+			if (error.response && error.response.status === 101) {
+
+				console.error('이미 사용 중인 닉네임 입니다.');
+				alert('이미 사용 중인 닉네임 입니다.');
+
+			}
+
+			if (error.response && error.response.status === 102) {
+
+				console.error('이미 사용 중인 이메일 입니다.');
+				alert('이미 사용 중인 이메일 입니다.');
+
+			}
+
+			if (error.response && error.response.status === 103) {
+
+				console.error('토큰번호를 확인해주세요.');
+				alert('토큰번호를 확인해주세요.');
+
+			}
+
+			console.error('회원가입 실패:', error);
+			alert("회원가입에 실패했습니다.");
+
 		}
 	};
 
@@ -85,7 +177,7 @@ const Signup = () => {
 			<form onSubmit={handleSignup}>
 
 				<div className="form-group mb-3">
-					<input type="text" className="form-control form-control-lg" placeholder="닉네임" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+					<input type="text" className="form-control form-control-lg" placeholder="닉네임" value={nickname}  onChange={handlennickNameChange} />
 					{nicknameError && <span className="text-danger">{nicknameError}</span>}
 				</div>
 

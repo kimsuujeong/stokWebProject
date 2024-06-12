@@ -45,7 +45,9 @@ public class WriteService {
 	public String getStockCode(String stockName) {
 		return stockRepository.findStockCode(stockName);
 	}
+	
 	public StockPost insertBoard(int getUserId, String title, String contents, int getStockCode) {
+		
 		StockPost stockPost = new StockPost();
 	    stockPost.setUserId(getUserId);
 	    stockPost.setTitle(title);
@@ -55,6 +57,7 @@ public class WriteService {
 	    stockPost.setUpdateTime(LocalDateTime.now());
 
 	    return stockPostRepository.save(stockPost);
+	    
 	}
 
 	public StockImage insertImage(int boardId, String imageURL) {
@@ -65,6 +68,7 @@ public class WriteService {
 		stockImage.setChatgpt(null);
 		
 		return stockImageRepository.save(stockImage);
+		
 	}
 
 }

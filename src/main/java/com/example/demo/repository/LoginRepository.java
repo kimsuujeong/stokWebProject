@@ -12,9 +12,8 @@ public interface LoginRepository extends JpaRepository<Login, String>{
 	@Query("select m from Login m where m.email = ?1 and m.password = ?2")
 	Login findByEmailAndPassword(String email, String password);
 	
-	@Query("SELECT COUNT(l) from Login l where l.email = ?1")
+	@Query("SELECT COUNT(l) FROM Login l where l.email = ?1")
 	long countEmail(String email);
-
 
 
 }
