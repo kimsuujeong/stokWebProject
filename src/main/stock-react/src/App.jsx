@@ -1,8 +1,10 @@
 import React from "react";
 import { Routes, Route, Link } from 'react-router-dom';
+import ReactDOM from 'react-dom/client';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { PrimeReactProvider } from 'primereact/api';
 
 import Counter from "./layOut/Counter";
 import Home from "./page/Home";
@@ -20,6 +22,7 @@ function App() {
 		<div className='App'>
 
 			<Routes>
+				
 				<Route path="/" element={<Home />} />
 				<Route path="/question" element={<Question />} />
 				<Route path="/Write" element={<Write />} />

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
-import { generateContentFromFiles } from '../components/GeminiAPI';
+import Cookies from 'js-cookie';
 
 function Detail() {
     const { boardNumber } = useParams();
@@ -13,6 +13,7 @@ function Detail() {
     const [contents, setContents] = useState('');
     const [image, setImage] = useState(null);
     const [result, setResult] = useState(null);
+    const [userid, setUserid] = useState('');
 
     useEffect(() => {
         async function fetchPost() {
@@ -23,9 +24,11 @@ function Detail() {
                 setContents(response.data.contents);
                 setImage(response.data.imageURL);
                 setResult(response.data.chatgpt);
-
-                console.log(result);
+                const userIdFromCookie = Cookies.get('sessionId');
+                setUserid(userIdFromCookie);
                 
+                console.log(setUserid)
+
             } catch (error) {
                 console.error('Error fetching post:', error);
             }

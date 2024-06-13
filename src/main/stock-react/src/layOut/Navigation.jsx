@@ -38,7 +38,7 @@ function Navigation() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/">홈</Nav.Link>
+                        <Nav.Link href="/">HOME</Nav.Link>
                         <Nav.Link href="/question">주식 질문방</Nav.Link>
                         <Nav.Link href="/chatRoom">주식 주주 모임방</Nav.Link>
                     </Nav>
