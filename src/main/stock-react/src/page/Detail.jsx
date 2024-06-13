@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import { generateContentFromFiles } from '../components/GeminiAPI';
 
 function Detail() {
     const { boardNumber } = useParams();
@@ -10,6 +12,7 @@ function Detail() {
     const [title, setTitle] = useState('');
     const [contents, setContents] = useState('');
     const [image, setImage] = useState(null);
+    const [result, setResult] = useState(null);
 
     useEffect(() => {
         async function fetchPost() {
@@ -18,7 +21,11 @@ function Detail() {
                 setPost(response.data);
                 setTitle(response.data.title);
                 setContents(response.data.contents);
-                setImage(response.data.imageURL)
+                setImage(response.data.imageURL);
+                setResult(response.data.chatgpt);
+
+                console.log(result);
+                
             } catch (error) {
                 console.error('Error fetching post:', error);
             }
@@ -52,41 +59,62 @@ function Detail() {
         }
     };
 
+    // 파일 로딩
     if (!post) {
         return <div>Loading...</div>;
     }
 
+    // fileReader
     const reader = new FileReader();
+
     reader.onload = () => {
+
         setImage(reader.result);
+
     };
 
     return (
 
         <>
-        <div style={{ marginRight: "auto" }}>
-                <Button onClick={handleUpdate}>수정</Button>
-                <Button onClick={handleDelete}>삭제</Button>
-        </div>
 
-        <Container>
-            
-            <h3>{post.title}</h3>
-            <p>글쓴이 : {post.nickname}</p>
-            <p>작성 시간 : {post.createTime}</p>
-            <p>주식 코드 : {post.stockCode}</p>
-            <img src={image} alt="미리보기" style={{ marginTop: '10px', maxWidth: '100%', maxHeight: '500px' }} />
-            {/* 
-            // 수정부분 구현 해야함
-            <Form.Control
-                as="textarea"
-                value={contents}
-                onChange={(e) => setContents(e.target.value)}
+            <Container>
 
-            /> */}
-            <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                <div style={{ textAlign: "right", marginBottom: "10px", marginTop: "20px" }}>
+                    <Button onClick={handleUpdate}>수정</Button>
+                    <Button onClick={handleDelete}>삭제</Button>
+                </div>
 
-        </Container>
+                <h3>{post.title}</h3>
+                <p> {post.nickname} | 주식코드 : {post.stockCode} | {post.createTime}</p>
+                <hr></hr>
+
+                {/* fileReader */}
+                {image && <img src={image} alt="미리보기" style={{ marginTop: '10px', maxWidth: '100%', maxHeight: '500px' }} />}
+
+                {/* 
+                // 수정부분 구현 해야함
+                <Form.Control
+                    as="textarea"
+                    value={contents}
+                    onChange={(e) => setContents(e.target.value)}
+                /> */}
+
+                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+
+                {image && <Card >
+                    <Card.Header>[Gemini] AI답변 입니다.
+                    </Card.Header>
+                    <Card.Body>
+                        <blockquote className="blockquote mb-0">
+                            <footer className="blockquote-footer">
+                                <cite title="Source Title">{result && <div>{result}</div>}</cite>
+                            </footer>
+                        </blockquote>
+                    </Card.Body>
+                </Card>}
+
+            </Container>
+
         </>
     );
 }

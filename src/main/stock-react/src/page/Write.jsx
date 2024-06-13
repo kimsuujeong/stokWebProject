@@ -14,6 +14,8 @@ function Write() {
     const [contents, setContents] = useState('');
     const [stockCode, setStockCode] = useState('');
     const [imageURL, setImageURL] = useState('');
+    const [result, setResult] = useState(null)
+
     const questionNavigate = useNavigate();
 
     useEffect(() => {
@@ -21,8 +23,16 @@ function Write() {
         setUserid(userIdFromCookie);
     }, []);
 
+    const handleResultChange = (result) => {
+        setResult(result); // Write 컴포넌트 내부에서 결과를 업데이트합니다.
+        console.log(result)
+      };    
+
     const handleWrite = async () => {
-        const requestData = { userid, title, contents, stockCode, imageURL };
+
+        console.log(result)
+
+        const requestData = { userid, title, contents, stockCode, imageURL , result};
 
 		try {
 			const response = await axios.post('http://localhost:8085/write', requestData);
@@ -76,7 +86,8 @@ function Write() {
                     
                     <SelectStock onSelectChange={setStockCode} />
                     <br></br>
-                    <S3Upload onImageUrlChange={handleImageUrlChange} />
+                    <S3Upload onImageUrlChange={handleImageUrlChange}
+                              onResultChange={handleResultChange} />
                     <br></br>
                     <Form.Control
                         style={{ width: "100%" }}

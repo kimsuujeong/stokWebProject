@@ -53,6 +53,7 @@ public class QuestionService {
 	        dto.setStockCode(post.getStockCode());
 	        dto.setImageURL(post.getStockImage().getImageURL()); // 이미지 URL 추가
 	        dto.setNickname(getNickname(dto.getUserId()));
+	        dto.setChatgpt(post.getStockImage().getChatgpt());
 	        
 	        return dto;
 	    }

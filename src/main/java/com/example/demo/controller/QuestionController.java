@@ -37,9 +37,11 @@ public class QuestionController {
     public ResponseEntity<StockPostDto> getBoardById(@PathVariable("boardNumber") int boardNumber) {
         StockPostDto post = questionService.getBoardById(boardNumber);
         System.out.println(boardNumber);
+        
         if (post == null) {
             return ResponseEntity.notFound().build();
         }
+        
         return ResponseEntity.ok(post);
     }
 	

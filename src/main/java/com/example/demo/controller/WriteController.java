@@ -48,8 +48,10 @@ public class WriteController {
 		String stockName = requestData.get("stockCode");
 		int getStockCode = Integer.parseInt(writeService.getStockCode(stockName));
 		String imageURL = requestData.get("imageURL");
+		String chatgpt = requestData.get("result");
 		
 		System.out.println("글쓰기 컨트롤 탔음");
+		System.out.println(chatgpt);
 		
 		StockPost savedPost  = 
 				writeService.insertBoard(getUserId,title,contents,getStockCode);
@@ -57,7 +59,7 @@ public class WriteController {
 		int boardId = savedPost.getBoardNumber();
 		
 		StockImage stockImage = 
-				writeService.insertImage(boardId,imageURL);
+				writeService.insertImage(boardId,imageURL,chatgpt);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 		

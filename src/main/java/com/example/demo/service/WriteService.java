@@ -60,12 +60,12 @@ public class WriteService {
 	    
 	}
 
-	public StockImage insertImage(int boardId, String imageURL) {
+	public StockImage insertImage(int boardId, String imageURL, String chatgpt) {
 		
 		StockImage stockImage = new StockImage();
 		stockImage.setBoardNumber(boardId);
 		stockImage.setImageURL(imageURL);
-		stockImage.setChatgpt(null);
+		stockImage.setChatgpt(chatgpt);
 		
 		return stockImageRepository.save(stockImage);
 		

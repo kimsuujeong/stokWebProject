@@ -22,5 +22,6 @@ public class StockPostDto {
     private int stockCode;
     private String imageURL; // 이미지 URL 추가
     private String nickname;
+    private String chatgpt;
 
 }
