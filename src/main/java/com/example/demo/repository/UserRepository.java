@@ -14,9 +14,13 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	String findUserId(@Param("email") String email);
 	
 	@Query("SELECT u.nickname FROM User u WHERE u.userId = :userId")
-	String findUsernickname(@Param("userId")int userId);
+	String findUsernickname(@Param("userId") int userId);
 
 	@Query("SELECT COUNT(l) FROM User l where l.nickname = ?1")
 	long countnickname(String nickname);
+
+	@Query("SELECT u.email FROM User u WHERE u.userId = :userId")
+	String findUserEmail(@Param("userId") int userId);
+
 
 }

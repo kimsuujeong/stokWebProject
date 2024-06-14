@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.StockPostDto;
-import com.example.demo.entity.StockImage;
 import com.example.demo.entity.StockPost;
-import com.example.demo.entity.User;
 import com.example.demo.repository.StockPostRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -40,7 +38,10 @@ public class QuestionService {
 	    	return userRepository.findUsernickname(userId);
 	    }
 	    
-
+	    private String getEmail(int userId) {
+	    	return userRepository.findUserEmail(userId);
+	    }
+	    
 	    private StockPostDto convertToDto(StockPost post) {	
 	    	
 	        StockPostDto dto = new StockPostDto();
@@ -53,12 +54,15 @@ public class QuestionService {
 	        dto.setStockCode(post.getStockCode());
 	        dto.setImageURL(post.getStockImage().getImageURL()); // 이미지 URL 추가
 	        dto.setNickname(getNickname(dto.getUserId()));
+	        dto.setEmail(getEmail(dto.getUserId()));
 	        dto.setChatgpt(post.getStockImage().getChatgpt());
 	        
 	        return dto;
 	    }
-	    
-	    
+
+		public void deleteBoard(int boardNumber) {
+			stockPostRepository.deleteById(boardNumber);
+		}
 	
 
 }

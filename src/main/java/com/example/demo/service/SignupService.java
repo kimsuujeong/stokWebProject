@@ -1,12 +1,10 @@
 package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Login;
 import com.example.demo.entity.User;
-import com.example.demo.redis.RedisUtil;
 import com.example.demo.repository.LoginRepository;
 import com.example.demo.repository.UserRepository;
 

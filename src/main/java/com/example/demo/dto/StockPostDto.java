@@ -20,8 +20,9 @@ public class StockPostDto {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private int stockCode;
-    private String imageURL; // 이미지 URL 추가
+    private String imageURL;
     private String nickname;
+    private String email;
     private String chatgpt;
 
 }

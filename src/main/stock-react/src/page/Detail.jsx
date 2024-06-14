@@ -13,9 +13,12 @@ function Detail() {
     const [contents, setContents] = useState('');
     const [image, setImage] = useState(null);
     const [result, setResult] = useState(null);
-    const [userid, setUserid] = useState('');
+    const [userId, setUserId] = useState('');
+    const [userIdFromCookie, setUserIdFromCookie] = useState('');
+    const [isUserPost, setIsUserPost] = useState(false);
 
     useEffect(() => {
+
         async function fetchPost() {
             try {
                 const response = await axios.get(`/question/${boardNumber}`);
@@ -24,17 +27,23 @@ function Detail() {
                 setContents(response.data.contents);
                 setImage(response.data.imageURL);
                 setResult(response.data.chatgpt);
-                const userIdFromCookie = Cookies.get('sessionId');
-                setUserid(userIdFromCookie);
-                
-                console.log(setUserid)
-
+                setUserId(response.data.email);
+                setUserIdFromCookie(Cookies.get('sessionId'));
             } catch (error) {
                 console.error('Error fetching post:', error);
             }
         }
         fetchPost();
+
     }, [boardNumber]);
+
+    useEffect(() => {
+
+        if (userId && userIdFromCookie) {
+            setIsUserPost(userId == userIdFromCookie);
+        }
+
+    }, [userId, userIdFromCookie]);
 
     const handleUpdate = async () => {
         try {
@@ -80,12 +89,15 @@ function Detail() {
 
         <>
 
-            <Container>
+            <Container style={{padding:"3rem"}}>
 
-                <div style={{ textAlign: "right", marginBottom: "10px", marginTop: "20px" }}>
-                    <Button onClick={handleUpdate}>수정</Button>
-                    <Button onClick={handleDelete}>삭제</Button>
-                </div>
+                {isUserPost ? (<>
+                {userIdFromCookie && <div style={{ textAlign: "right", marginBottom: "10px", marginTop: "20px" }}>
+                    <Button style={{ margin: "0.2rem" }} onClick={handleUpdate}>수정</Button>
+                    <Button style={{ margin: "0.2rem" }} onClick={handleDelete}>삭제</Button>
+                </div>}
+                </>) : <></>}
+                
 
                 <h3>{post.title}</h3>
                 <p> {post.nickname} | 주식코드 : {post.stockCode} | {post.createTime}</p>
@@ -102,9 +114,9 @@ function Detail() {
                     onChange={(e) => setContents(e.target.value)}
                 /> */}
 
-                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                <div style={{marginTop:"2rem"}} dangerouslySetInnerHTML={{ __html: contents }}></div>
 
-                {image && <Card >
+                {image && <Card style={{marginTop:"2rem"}} >
                     <Card.Header>[Gemini] AI답변 입니다.
                     </Card.Header>
                     <Card.Body>
