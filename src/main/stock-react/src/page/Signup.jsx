@@ -13,6 +13,7 @@ const Signup = () => {
 	const [nickname, setNickname] = useState('');
 	const [nicknameError, setNicknameError] = useState('');
 	const loginNavigate = useNavigate();
+	const [showEmailTokenInput, setShowEmailTokenInput] = useState(false);
 
 	const handlennickNameChange = async (e) => {
 
@@ -20,15 +21,15 @@ const Signup = () => {
 		setNickname(value);
 		const nicknamePattern = /^[^\s]{1,12}$/;
 
-        if (!nicknamePattern.test(value)) {
-            setNicknameError('공백 없이 12글자 이내로 해주세요.');
-            return;
-        }
-        setNicknameError('');
+		if (!nicknamePattern.test(value)) {
+			setNicknameError('공백 없이 12글자 이내로 해주세요.');
+			return;
+		}
+		setNicknameError('');
 
 
 		try {
-			const response = await axios.post('http://localhost:8085/signup/nickNameCheck', { nickname : value });
+			const response = await axios.post('http://localhost:8085/signup/nickNameCheck', { nickname: value });
 
 			if (response.status === 200) {
 
@@ -84,12 +85,25 @@ const Signup = () => {
 	const handleEmailTokenSend = async () => {
 
 		try {
+			
+			if (!email) {
+				setEmailError('이메일을 입력해주세요.');
+				return;
+			}
+
+		const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+		if (!emailPattern.test(email)) {
+			setEmailError('올바른 이메일 형식이 아닙니다.');
+			return;
+		}
 
 			const response = await axios.post('http://localhost:8085/signup/email', { email });
-	
+
 			if (response.status === 200) {
 
 				alert("이메일 토큰을 전송했습니다.");
+				setShowEmailTokenInput(true);
 
 			}
 
@@ -97,12 +111,10 @@ const Signup = () => {
 
 			if (error.response && error.response.status === 401) {
 
-				console.error('이미 사용 중인 이메일입니다.');
-				alert('이미 사용 중인 이메일입니다.');
+				setEmailError('이미 사용 중인 이메일입니다.');
 
 			} else {
 
-				console.error('이메일 토큰 전송 실패:', error);
 				alert("이메일 토큰 전송에 실패했습니다.");
 
 			}
@@ -110,8 +122,8 @@ const Signup = () => {
 		}
 
 	};
-	
-	
+
+
 
 	const handleSignup = async (e) => {
 
@@ -124,12 +136,34 @@ const Signup = () => {
 
 		setPasswordError('');
 
-		const requestData = { nickname, email, password, emailToken};
+		const requestData = { nickname, email, password, emailToken };
 
 		try {
 
 			const response = await axios.post('http://localhost:8085/signup', requestData);
 			console.log(response.data);
+
+
+			if (!nickname){
+				alert("닉네임을 입력해주세요");
+				return;
+			}
+
+			if (!email){
+				alert("이메일을 입력해주세요");
+				return;
+			}
+
+			if (!password){
+				alert("비밀번호를 입력해주세요");
+				return;
+			}
+
+			if (!emailToken){
+				alert("인증번호를 입력해주세요");
+				return;
+			}
+
 			if (response.status === 200) {
 
 				alert("회원가입이 완료 되었습니다.");
@@ -137,7 +171,7 @@ const Signup = () => {
 				loginNavigate("/login");
 
 			} else {
-				
+
 				alert("회원가입에 실패했습니다.");
 
 			}
@@ -177,7 +211,7 @@ const Signup = () => {
 			<form onSubmit={handleSignup}>
 
 				<div className="form-group mb-3">
-					<input type="text" className="form-control form-control-lg" placeholder="닉네임" value={nickname}  onChange={handlennickNameChange} />
+					<input type="text" className="form-control form-control-lg" placeholder="닉네임" value={nickname} onChange={handlennickNameChange} />
 					{nicknameError && <span className="text-danger">{nicknameError}</span>}
 				</div>
 
@@ -191,10 +225,12 @@ const Signup = () => {
 					{emailError && <span className="text-danger">{emailError}</span>}
 				</div>
 
-				<div className="form-group mb-3">
-					<input type="text" className="form-control form-control-lg" placeholder="이메일 토큰" value={emailToken} onChange={(e) => setEmailToken(e.target.value)} />
-					{emailTokenError && <span className="text-danger">{emailTokenError}</span>}
-				</div>
+				{showEmailTokenInput && (
+					<div className="form-group mb-3">
+						<input type="text" className="form-control form-control-lg" placeholder="이메일 토큰" value={emailToken} onChange={(e) => setEmailToken(e.target.value)} />
+						{emailTokenError && <span className="text-danger">{emailTokenError}</span>}
+					</div>
+				)}
 
 				<div className="form-group mb-3">
 					<input type="password" className="form-control form-control-lg" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />

@@ -79,8 +79,8 @@ function QuestionComponent() {
 
     return (
         <Container>
-            <h3 style={{ margin: "1rem", color: "gray-dark" }}>
-                <b>게시글 목록</b>
+            <h3 style={{ paddingTop: "2rem", paddingBottom:'1rem', color: "gray-dark" }}>
+                <b> 주식 질문방</b>
             </h3>
 
             {WriteBtn ? (

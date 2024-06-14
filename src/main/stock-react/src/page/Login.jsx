@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-
+import '../login.css'
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -19,6 +19,22 @@ function Login() {
     };
 
     const handleLogin = () => {
+        // 이메일과 비밀번호가 비어 있는지 확인
+        if (!email){
+            alert("이메일을 입력해주세요");
+            return;
+        }
+
+        if(!password){
+            alert('비밀번호를 입력해주세요');
+            return;
+        }
+
+        if (!email || !password) {
+            alert("이메일과 비밀번호를 모두 입력해주세요.");
+            return;
+        }
+
         const requestData = { email, password };
 
         axios.post('http://localhost:8085/login', requestData)
@@ -42,15 +58,16 @@ function Login() {
     }
 
     return (
+        <div className="LoginContainer">
         <Container >
-            <Row className="justify-content-md-center" style={{ marginTop: '50px' }}>
+            <Row>
                 <Col xs={8} md={4}>
                     <h2>로그인</h2>
                     <Form>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Control
                                 type="email"
-                                placeholder="이메일"
+                                placeholder="email"
                                 value={email}
                                 onChange={saveEmail}
                             />
@@ -59,21 +76,20 @@ function Login() {
                         <Form.Group controlId="formBasicPassword">
                             <Form.Control
                                 type="password"
-                                placeholder="비밀번호"
+                                placeholder="password"
                                 value={password}
                                 onChange={savePassword}
                             />
                         </Form.Group>
-                        <div style={{marginTop:"0.5rem"}}>
-                        <Button variant="primary" onClick={handleLogin}>로그인</Button>{' '}
-                        <Button variant="secondary" onClick={redirectToSignPage}>회원가입</Button>
+                        <div style={{width:"155%"}}>
+                        <Button style={{margin:"0px 0px 0px 0px"}} id="loginBnt" variant="primary" onClick={handleLogin}>로그인</Button>{' '}
+                        <Button id="signupBnt" variant="secondary" onClick={redirectToSignPage}>회원가입</Button>
                         </div>
-
-                        
                     </Form>
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 }
 
