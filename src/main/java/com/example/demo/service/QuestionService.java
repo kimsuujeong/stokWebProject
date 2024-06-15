@@ -9,9 +9,14 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.StockPostDto;
 import com.example.demo.entity.StockPost;
 import com.example.demo.repository.StockPostRepository;
+import com.example.demo.repository.StockRepository;
 import com.example.demo.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
 	
 	@Autowired
@@ -19,6 +24,9 @@ public class QuestionService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private StockRepository stockRepository;
 	
 
 	 public List<StockPostDto> getAllBoard() {
@@ -34,6 +42,7 @@ public class QuestionService {
 	        return convertToDto(post);
 	    }
 	    
+	    
 	    private String getNickname(int userId) {
 	    	return userRepository.findUsernickname(userId);
 	    }
@@ -41,6 +50,10 @@ public class QuestionService {
 	    private String getEmail(int userId) {
 	    	return userRepository.findUserEmail(userId);
 	    }
+	    
+	    public String getStockName(int stockCode) {
+			return stockRepository.findStockName(stockCode);
+		}
 	    
 	    private StockPostDto convertToDto(StockPost post) {	
 	    	
@@ -52,16 +65,26 @@ public class QuestionService {
 	        dto.setCreateTime(post.getCreateTime());
 	        dto.setUpdateTime(post.getUpdateTime());
 	        dto.setStockCode(post.getStockCode());
-	        dto.setImageURL(post.getStockImage().getImageURL()); // 이미지 URL 추가
+	        dto.setStockName(getStockName(post.getStockCode()));
+	        if (post.getStockImage() != null) {
+	            dto.setImageURL(post.getStockImage().getImageURL());
+	            dto.setChatgpt(post.getStockImage().getChatgpt());
+	        }
 	        dto.setNickname(getNickname(dto.getUserId()));
 	        dto.setEmail(getEmail(dto.getUserId()));
-	        dto.setChatgpt(post.getStockImage().getChatgpt());
 	        
 	        return dto;
 	    }
 
 		public void deleteBoard(int boardNumber) {
 			stockPostRepository.deleteById(boardNumber);
+		}
+
+		@Transactional
+		public boolean updateBoard(int boardNumber, String title, String contents) {
+			System.out.println("여기도 잘 탔음");
+			stockPostRepository.updateBoard(boardNumber, title, contents);
+			return false;
 		}
 	
 

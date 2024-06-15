@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.Login;
 import com.example.demo.entity.User;
 import com.example.demo.mail.MailController;
 import com.example.demo.redis.RedisUtil;
@@ -135,7 +134,7 @@ public class SignupController {
         
         int userId = user.getUserId();
         
-        Login login = signupService.insertLogin(userId, email, password);
+        signupService.insertLogin(userId, email, password);
         
         return ResponseEntity.ok("회원가입이 완료되었습니다.");
 		

@@ -104,8 +104,8 @@ function QuestionComponent() {
                             <td style={{ width: "5%" }}>{question.boardNumber}</td>
                             <td><Link to={`/detail/${question.boardNumber}`}>{question.title}</Link></td>
                             <td>{question.nickname}</td>
-                            <td>{question.createTime}</td>
-                            <td>{question.stockCode}</td>
+                            <td style={{fontSize:"0.7rem"}}>{question.createTime}</td>
+                            <td style={{fontSize:"0.7rem"}}>{question.stockName}({question.stockCode})</td>
                         </tr>
                     ))}
                 </tbody>

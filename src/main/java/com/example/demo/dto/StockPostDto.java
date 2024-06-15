@@ -20,6 +20,7 @@ public class StockPostDto {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private int stockCode;
+    private String stockName;
     private String imageURL;
     private String nickname;
     private String email;

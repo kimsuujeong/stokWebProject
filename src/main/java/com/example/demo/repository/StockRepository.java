@@ -13,5 +13,8 @@ public interface StockRepository extends JpaRepository<Stock, Integer> {
 	@Query("SELECT s.stockCode FROM Stock s WHERE s.stockName = :stockName")
 	String findStockCode(@Param("stockName") String stockName);
 
+	@Query("SELECT s.stockName FROM Stock s WHERE s.stockCode = :stockCode")
+	String findStockName(@Param("stockCode") int stockCode);
+
 
 }

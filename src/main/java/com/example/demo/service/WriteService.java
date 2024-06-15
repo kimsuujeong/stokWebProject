@@ -15,7 +15,10 @@ import com.example.demo.repository.StockPostRepository;
 import com.example.demo.repository.StockRepository;
 import com.example.demo.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class WriteService {
 
 	@Autowired

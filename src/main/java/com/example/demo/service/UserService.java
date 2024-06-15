@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.LoginRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
 	
 	@Autowired

@@ -27,5 +27,6 @@ public class StockImage {
 	@ManyToOne
     @JoinColumn(name = "boardNumber", insertable=false, updatable=false)
     private StockPost stockPostEntity;
+	
 
 }

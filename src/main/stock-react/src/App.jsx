@@ -13,6 +13,7 @@ import ChatRoom from "./page/ChatRoom";
 import Login from "./page/Login";
 import Signup from "./page/Signup";
 import Write from "./page/Write";
+import WriteUpdate from "./page/WriteUpdate";
 import Detail from "./page/Detail";
 
 function App() {
@@ -22,7 +23,6 @@ function App() {
 		<div className='App'>
 
 			<Routes>
-				
 				<Route path="/" element={<Home />} />
 				<Route path="/question" element={<Question />} />
 				<Route path="/Write" element={<Write />} />
@@ -31,6 +31,7 @@ function App() {
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/detail/:boardNumber" element={<Detail />} />
+				<Route path="/WriteUpdate/:boardNumber" element={<WriteUpdate />} />
 			</Routes>
 		</div>
 	);

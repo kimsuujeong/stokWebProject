@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.StockDto;
-import com.example.demo.entity.StockImage;
 import com.example.demo.entity.StockPost;
 import com.example.demo.service.WriteService;
 
@@ -54,8 +53,7 @@ public class WriteController {
 
 		int boardId = savedPost.getBoardNumber();
 		
-		StockImage stockImage = 
-				writeService.insertImage(boardId,imageURL,chatgpt);
+		writeService.insertImage(boardId,imageURL,chatgpt);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 		

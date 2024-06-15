@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Redirect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Navigate, useNavigate, Link } from "react-router-dom";
+import { Navigate, useNavigate} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Cookies from 'js-cookie';
+import ReactQuill from "react-quill";
 
-function Detail() {
+const WriteUpdate = () => {
     const { boardNumber } = useParams();
     const [post, setPost] = useState(null);
     const [title, setTitle] = useState('');
@@ -17,8 +19,6 @@ function Detail() {
     const [userId, setUserId] = useState('');
     const [userIdFromCookie, setUserIdFromCookie] = useState('');
     const [isUserPost, setIsUserPost] = useState(false);
-    const [redirectToUpdate, setRedirectToUpdate] = useState(false);
-    const navigate = useNavigate();
 
     // 상세 글 로드
     useEffect(() => {
@@ -58,13 +58,21 @@ function Detail() {
 
         try {
 
-            const updatedPost = { ...post, title, contents };
-            await axios.put(`/question/${boardNumber}`, updatedPost);
-            // 수정 후에는 다시 해당 게시물을 가져와서 업데이트
-            const response = await axios.get(`/question/${boardNumber}`);
-            setPost(response.data);
-            alert('게시물이 수정되었습니다.');
+            const updatedPost = { boardNumber, title, contents };
+            const response = await axios.put(`http://localhost:8085/WriteUpdate/${boardNumber}`, updatedPost);
+    
+            if (response.status === 200) {
 
+                alert("글 수정이 완료 되었습니다.");
+
+                window.location.href = `/detail/${boardNumber}`;
+
+            } else {
+
+                alert("글 수정에 실패했습니다.");
+
+            }
+    
         } catch (error) {
 
             console.error('Error updating post:', error);
@@ -73,6 +81,7 @@ function Detail() {
         }
 
     };
+    
 
     const handleDelete = async () => {
 
@@ -102,35 +111,44 @@ function Detail() {
 
     };
 
-    const redirectToUpdatePage = () => {
-        setRedirectToUpdate(true);
+    const modules = {
+        toolbar: {
+            container: [
+                [{ header: [1, 2, 3, false] }],
+                [{ color: ["red", "pink", "blue", "yellow", "gray", "black"] }],
+                ["bold", "underline"],
+                // ["image"],
+            ],
+        },
     };
 
-    if (redirectToUpdate) {
-        return <Navigate to="/WriteUpdate" />;
-    }
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    };
+
+    const handleContentsChange = (value) => {
+        setContents(value);
+    };
 
     return (
 
         <>
 
-            <Container style={{ padding: "3rem" }}>
+            <Container style={{padding:"3rem"}}>
 
-                {isUserPost ? (
-                    <>
-                        {userIdFromCookie && (
-                            <div style={{ textAlign: "right", marginBottom: "10px", marginTop: "20px" }}>
-                                <Link to={`/WriteUpdate/${post.boardNumber}`} style={{ textDecoration: 'none' }}>
-                                    <Button style={{ margin: "0.2rem" }}>수정</Button>
-                                </Link>
-                                <Button style={{ margin: "0.2rem" }} onClick={handleDelete}>삭제</Button>
-                            </div>
-                        )}
-                    </>
-                ) : null}
-
-
-                <h3>{post.title}</h3>
+                {isUserPost ? (<>
+                {userIdFromCookie && <div style={{ textAlign: "right", marginBottom: "10px", marginTop: "20px" }}>
+                    <Button style={{ margin: "0.2rem" }} onClick={handleUpdate}>완료</Button>
+                    <Button style={{ margin: "0.2rem" }} onClick={handleDelete}>삭제</Button>
+                </div>}
+                </>) : <></>}
+                
+                <Form.Control
+                        style={{ width: "100%" , fontSize: "1.5rem"}}
+                        type="text" placeholder="제목"
+                        value={title}
+                        onChange={handleTitleChange}
+                    />
                 <p> {post.nickname} | {post.stockName}({post.stockCode}) |
                     {post.createTime == post.updateTime ? <> {post.createTime} </> : <> {post.createTime} | 수정: {post.updateTime}</>} </p>
                 <hr></hr>
@@ -138,9 +156,16 @@ function Detail() {
                 {/* fileReader */}
                 {image && <img src={image} alt="미리보기" style={{ marginTop: '10px', maxWidth: '100%', maxHeight: '500px' }} />}
 
-                <div style={{ marginTop: "2rem" }} dangerouslySetInnerHTML={{ __html: contents }}></div>
+                {/* <div style={{marginTop:"2rem"}} dangerouslySetInnerHTML={{ __html: contents }}></div> */}
 
-                {image && <Card style={{ marginTop: "2rem" }} >
+                <ReactQuill
+                        style={{ paddingTop:"1rem", paddingBottom:"2rem", margin: "0px", width: "auto", height: "500px" }}
+                        modules={modules}
+                        value={contents}
+                        onChange={handleContentsChange}
+                    />
+
+                {image && <Card style={{marginTop:"2rem"}} >
                     <Card.Header>[Gemini] AI답변 입니다.
                     </Card.Header>
                     <Card.Body>
@@ -156,6 +181,6 @@ function Detail() {
 
         </>
     );
-}
+};
 
-export default Detail;
+export default WriteUpdate;

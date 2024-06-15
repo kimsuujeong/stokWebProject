@@ -1,7 +1,7 @@
 import React from "react";
 import { IoHammer } from "react-icons/io5";
 
-const question = () => {
+const ChatRoom = () => {
     return (
         <>
             <h1>주주 모임방 입니다.</h1>
@@ -11,4 +11,4 @@ const question = () => {
     )
 }
 
-export default question;
+export default ChatRoom;
