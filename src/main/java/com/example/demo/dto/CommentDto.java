@@ -27,5 +27,7 @@ public class CommentDto {
 	
 	private String userNickname;
 	
+	private String email;
+	
 
 }

@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.glassfish.jaxb.core.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.CommentDto;
 import com.example.demo.dto.StockPostDto;
 import com.example.demo.entity.Comment;
 import com.example.demo.entity.StockPost;
@@ -30,7 +34,7 @@ public class QuestionService {
 
 	@Autowired
 	private StockRepository stockRepository;
-	
+
 	@Autowired
 	private CommentRepository commentRepository;
 
@@ -50,7 +54,7 @@ public class QuestionService {
 	private String getNickname(int userId) {
 		return userRepository.findUsernickname(userId);
 	}
-	
+
 	private int getuserIdToEmail(String email) {
 		return userRepository.findUserToEmail(email);
 	}
@@ -98,14 +102,39 @@ public class QuestionService {
 	public Comment createComment(int boardNumber, String Comment, String email) {
 
 		Comment comment = new Comment();
-		
+
 		comment.setBoardNumber(boardNumber);
 		comment.setUserId(getuserIdToEmail(email));
 		comment.setComment(Comment);
 		comment.setCommentTime(LocalDateTime.now());
 		comment.setCommentUpdateTime(LocalDateTime.now());
-		
+
 		return commentRepository.save(comment);
+	}
+
+	public List<CommentDto> getCommentDto(int boardNumber) {
+
+		List<Comment> comments = commentRepository.findByCommnet(boardNumber);
+	    
+	    List<CommentDto> commentDtos = new ArrayList<>();
+	    
+	    for (Comment comment : comments) {
+	    	
+	        CommentDto dto = new CommentDto();
+	        dto.setBoardNumber(comment.getBoardNumber());
+	        dto.setComment(comment.getComment());
+	        dto.setCommentId(comment.getCommentId());
+	        dto.setCommentTime(comment.getCommentTime());
+	        dto.setUserId(comment.getUserId());
+	        dto.setUserNickname(getNickname(comment.getUserId()));
+	        dto.setEmail(getEmail(comment.getUserId()));
+	        
+	        commentDtos.add(dto);
+	        
+	    }
+
+	    return commentDtos;
+	    
 	}
 
 }

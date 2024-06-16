@@ -59,20 +59,19 @@ public class QuestionController {
 
 		return ResponseEntity.ok(boardNumber);
 	}
-	
+
 	@PutMapping("WriteUpdate/{boardNumber}") // 게시물 수정
 	public ResponseEntity<String> updateBoard(@RequestBody Map<String, String> requestData) {
 
 		try {
-			
+
 			int boardNumber = Integer.parseInt(requestData.get("boardNumber"));
 			String title = requestData.get("title");
 			String contents = requestData.get("contents");
-			
+
 			System.out.println("여기는 잘 타니");
 			System.out.println(questionService.updateBoard(boardNumber, title, contents));
 			questionService.updateBoard(boardNumber, title, contents);
-			
 
 			return ResponseEntity.ok("게시물이 성공적으로 업데이트 되었습니다.");
 
@@ -88,16 +87,29 @@ public class QuestionController {
 	}
 
 	@PostMapping("/detail/{postId}/comments")
-	public ResponseEntity<Comment> Commend(@RequestBody Map<String, String> requestData){
-		
-		int boardNumber =  Integer.parseInt(requestData.get("boardNumber"));
-		String Comment = requestData.get("comment");
-        String email = requestData.get("userId");
-        
-        Comment comment = questionService.createComment(boardNumber, Comment, email);
+	public ResponseEntity<Comment> Commend(@RequestBody Map<String, String> requestData) {
 
-        return ResponseEntity.ok(comment);
+		int boardNumber = Integer.parseInt(requestData.get("boardNumber"));
+		String Comment = requestData.get("comment");
+		String email = requestData.get("userId");
+
+		Comment comment = questionService.createComment(boardNumber, Comment, email);
+
+		return ResponseEntity.ok(comment);
 	}
-	
-	
+
+	@GetMapping("/detail/{boardNumber}/comments")
+	public ResponseEntity<List<CommentDto>> getAllCommentsByBoardNumber(@PathVariable("boardNumber") int boardNumber) {
+	    
+		List<CommentDto> commentDto = questionService.getCommentDto(boardNumber);
+	    
+	    if (commentDto == null) { // 404
+	    	
+	        return ResponseEntity.notFound().build();
+	        
+	    }
+	    
+	    return ResponseEntity.ok(commentDto);
+	    
+	}
 }
