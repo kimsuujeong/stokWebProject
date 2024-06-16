@@ -112,4 +112,42 @@ public class QuestionController {
 	    return ResponseEntity.ok(commentDto);
 	    
 	}
+	
+	@PutMapping("detail/comments/{commentId}") // 게시물 수정
+	public ResponseEntity<String> updateComment(@RequestBody Map<String, String> requestData) {
+
+		try {
+			
+			String commentId = requestData.get("commentId");
+			String comment = requestData.get("comment");
+			
+			questionService.updateComment(commentId,comment);
+
+		} catch (IllegalArgumentException e) {
+
+			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+
+		} catch (Exception e) {
+
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+		}
+		
+		return ResponseEntity.ok("작성되었습니다.");
+		
+	}
+	
+	@DeleteMapping("detail/comments/{commentId}") // 게시물 삭제
+	public ResponseEntity<Integer> deleteComment(@PathVariable("commentId") int commentId) {
+
+		System.out.println(commentId);
+
+		try {
+			questionService.deleteComment(commentId);
+		} catch (Exception e) {
+			ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(commentId);
+	}
+	
 }

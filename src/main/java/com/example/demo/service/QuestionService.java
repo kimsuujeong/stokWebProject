@@ -3,10 +3,8 @@ package com.example.demo.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.glassfish.jaxb.core.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,7 +92,6 @@ public class QuestionService {
 
 	@Transactional
 	public boolean updateBoard(int boardNumber, String title, String contents) {
-		System.out.println("여기도 잘 탔음");
 		stockPostRepository.updateBoard(boardNumber, title, contents);
 		return false;
 	}
@@ -125,6 +122,7 @@ public class QuestionService {
 	        dto.setComment(comment.getComment());
 	        dto.setCommentId(comment.getCommentId());
 	        dto.setCommentTime(comment.getCommentTime());
+	        dto.setCommentUpdateTime(comment.getCommentUpdateTime());
 	        dto.setUserId(comment.getUserId());
 	        dto.setUserNickname(getNickname(comment.getUserId()));
 	        dto.setEmail(getEmail(comment.getUserId()));
@@ -135,6 +133,15 @@ public class QuestionService {
 
 	    return commentDtos;
 	    
+	}
+
+	@Transactional
+	public void updateComment(String commentId, String comment) {
+		commentRepository.updateComment(commentId, comment);
+	}
+
+	public void deleteComment(int commentId) {
+		commentRepository.deleteById(commentId);
 	}
 
 }

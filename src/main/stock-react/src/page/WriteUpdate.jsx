@@ -130,6 +130,11 @@ const WriteUpdate = () => {
         setContents(value);
     };
 
+    const formatDateTime = (dateTimeString) => {
+        const date = new Date(dateTimeString);
+        return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    };
+
     return (
 
         <>
@@ -150,7 +155,7 @@ const WriteUpdate = () => {
                         onChange={handleTitleChange}
                     />
                 <p> {post.nickname} | {post.stockName}({post.stockCode}) |
-                    {post.createTime == post.updateTime ? <> {post.createTime} </> : <> {post.createTime} | 수정: {post.updateTime}</>} </p>
+                    {post.createTime == post.updateTime ? <> {formatDateTime(post.createTime)} </> : <> {formatDateTime(post.createTime)} | 수정: {formatDateTime(post.updateTime)}</>} </p>
                 <hr></hr>
 
                 {/* fileReader */}
