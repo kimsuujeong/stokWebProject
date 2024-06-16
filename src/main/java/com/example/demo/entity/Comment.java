@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -20,6 +21,9 @@ public class Comment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int commentId;
+	
+	@Column
 	private int boardNumber;
 	
 	@Column
@@ -31,11 +35,15 @@ public class Comment {
 	@Column
 	private LocalDateTime commentTime;
 	
+	@Column
+	private LocalDateTime commentUpdateTime;
+	
 	@ManyToOne
-	private StockPost stockPostEntity;
+	@JoinColumn(name = "boardNumber", insertable = false, updatable = false)
+	private StockPost stockPost;
 	
+	@ManyToOne
+	@JoinColumn(name = "userId", insertable = false, updatable = false)
+	private User user;
 	
-	
-	
-
 }

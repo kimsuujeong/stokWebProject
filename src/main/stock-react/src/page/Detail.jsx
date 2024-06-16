@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Cookies from 'js-cookie';
+import Comment from './Comment';
 
 function Detail() {
     const { boardNumber } = useParams();
@@ -151,7 +152,8 @@ function Detail() {
                         </blockquote>
                     </Card.Body>
                 </Card>}
-
+                <br></br>
+                <Comment />
             </Container>
 
         </>
